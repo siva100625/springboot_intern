@@ -3,43 +3,44 @@ package com.example.emp.controller;
 import com.example.emp.model.UserDetails;
 import com.example.emp.service.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/User")
+@RequestMapping("/employee")  // ✅ This must match the secured path
 public class UserDetailsController {
 
     @Autowired
-    private UserDetailsService uds;  // ✅ Use your custom service
+    private UserDetailsService uds;
 
-    // Get all users
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public List<UserDetails> getAllUsers() {
         return uds.getAllUser();
     }
 
-    // Get user by ID
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public UserDetails getUserById(@PathVariable int id) {
         return uds.findById(id);
     }
 
-    // Add new user
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public String addUser(@RequestBody UserDetails userDetails) {
         return uds.AddUser(userDetails) ? "Success" : "Fail";
     }
 
-    // Delete user
     @DeleteMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteUser(@RequestBody UserDetails userDetails) {
         return uds.delete(userDetails) ? "Success" : "Fail";
     }
 
-    // Update user
     @PutMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String updateUser(@PathVariable int id, @RequestBody UserDetails userDetails) {
         return uds.update(id, userDetails) ? "Success" : "Fail";
     }

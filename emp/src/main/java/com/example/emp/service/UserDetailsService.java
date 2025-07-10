@@ -1,7 +1,7 @@
 package com.example.emp.service;
 
-import com.example.emp.Repository.UserRepo;
 import com.example.emp.model.UserDetails;
+import com.example.emp.Repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +13,13 @@ public class UserDetailsService {
     @Autowired
     private UserRepo userRepo;
 
-    public UserDetailsService(UserRepo userRepo) {
-        this.userRepo = userRepo;
-    }
-
     public List<UserDetails> getAllUser() {
         return userRepo.findAll();
     }
 
     public UserDetails findById(int id) {
         return userRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("User with ID " + id + " not found"));
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
     }
 
     public boolean AddUser(UserDetails userDetails) {
@@ -37,9 +33,8 @@ public class UserDetailsService {
     }
 
     public boolean update(int id, UserDetails userDetails) {
-        userDetails.setEmpid(id);
+        userDetails.setEmpid(id);  // Ensure correct ID
         userRepo.save(userDetails);
         return true;
     }
 }
-
