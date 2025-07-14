@@ -46,8 +46,8 @@ public class SpringConfiguration {
                 .roles("ADMIN")
                 .build();
         UserDetails varsh = User.builder()
-                .username("varsh")
-                .password(passwordEncoder().encode("varsh"))
+                .username("siva")
+                .password(passwordEncoder().encode("siva"))
                 .roles("USER")
                 .build();
         return new InMemoryUserDetailsManager(admin,varsh);
